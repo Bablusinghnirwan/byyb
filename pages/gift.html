@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>A Gift For You | A Romantic Journey</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="../css/style.css">
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+</head>
+<body class="flex flex-col min-h-screen text-center relative overflow-x-hidden overflow-y-auto py-12">
+    
+    <audio id="bg-music" loop>
+        <source src="../song4.mp3" type="audio/mpeg">
+    </audio>
+
+    <div class="z-10 animate-fade-in w-full max-w-4xl mx-auto my-auto relative px-4">
+        
+        <div id="pre-reveal" class="glass-panel p-10 rounded-3xl mx-auto max-w-lg transition-all duration-1000">
+            <h1 class="text-4xl md:text-5xl font-bold mb-8 playfair text-pink-300">A Special Gift</h1>
+            <p class="text-lg mb-12 opacity-90">Tap the present to open it.</p>
+            
+            <div id="present" class="text-9xl cursor-pointer hover:scale-110 transition-transform duration-300 mb-8 animate-float inline-block select-none" onclick="openGift()">
+                🎁
+            </div>
+        </div>
+
+        <div id="gift-content" class="hidden opacity-0 transition-opacity duration-1000 glass-panel p-10 rounded-3xl w-full">
+            <h2 class="text-4xl font-bold text-pink-300 mb-6 playfair animate-pulse-glow inline-block px-4 py-2">Surprise, <span data-insert="name">My Love</span>!</h2>
+            
+            <div class="mb-8 grid grid-cols-1 md:grid-cols-2 gap-6 w-full">
+                <div class="relative rounded-2xl p-2 bg-gradient-to-br from-pink-500/20 to-purple-500/20 border border-pink-400/30 shadow-[0_0_20px_rgba(236,72,153,0.4)] transition-transform duration-300 hover:scale-[1.02]">
+                    <div class="absolute -top-4 -right-4 text-4xl z-20 animate-bounce drop-shadow-lg">🎀</div>
+                    <video src="../VN20260516_210631.mp4" controls class="w-full h-auto rounded-xl shadow-inner border border-white/10" preload="metadata" style="max-height: 60vh; object-fit: contain; background: black;"></video>
+                </div>
+                <div class="relative rounded-2xl p-2 bg-gradient-to-br from-purple-500/20 to-pink-500/20 border border-pink-400/30 shadow-[0_0_20px_rgba(236,72,153,0.4)] transition-transform duration-300 hover:scale-[1.02]">
+                    <div class="absolute -top-4 -left-4 text-4xl z-20 animate-bounce drop-shadow-lg" style="animation-delay: 0.5s;">💝</div>
+                    <video src="../VN20260516_212237.mp4" controls class="w-full h-auto rounded-xl shadow-inner border border-white/10" preload="metadata" style="max-height: 60vh; object-fit: contain; background: black;"></video>
+                </div>
+            </div>
+
+            <p class="text-xl leading-relaxed opacity-90 mb-10 font-light playfair italic">
+                "You are my today and all of my tomorrows."
+            </p>
+
+            <div class="btn-container mt-4">
+                <button onclick="navigate('letter.html', 'letter')" class="btn-primary">
+                    One last thing...
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script src="../js/main.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            if (typeof cosmicEngine !== 'undefined') cosmicEngine.setMood('journey');
+        });
+
+        function openGift() {
+            const present = document.getElementById('present');
+            const preReveal = document.getElementById('pre-reveal');
+            const content = document.getElementById('gift-content');
+            
+            present.classList.remove('animate-float', 'hover:scale-110');
+            present.classList.add('animate-shake');
+            
+            // Lower background music for cinematic effect
+            if (typeof duckAudio === 'function') duckAudio(0.1, 4000);
+            
+            // Play initial opening sound
+            playSFX('../assets/music/open.mp3');
+            
+            setTimeout(() => {
+                // Play celebration sound
+                playSFX('../assets/music/tada.mp3');
+
+                confetti({
+                    particleCount: 200,
+                    spread: 100,
+                    origin: { y: 0.6 },
+                    colors: ['#ffb6c1', '#ff69b4', '#ff1493', '#ffffff']
+                });
+
+                preReveal.style.opacity = '0';
+                preReveal.style.transform = 'scale(0.8)';
+                
+                setTimeout(() => {
+                    preReveal.style.display = 'none';
+                    content.classList.remove('hidden');
+                    setTimeout(() => {
+                        content.classList.remove('opacity-0');
+                    }, 50);
+                }, 1200); // Delayed reveal for anticipation
+
+            }, 500); 
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Love Letter | A Romantic Journey</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="../css/style.css">
+    <style>
+        .typing-cursor {
+            display: inline-block;
+            width: 8px;
+            height: 1.2em;
+            background-color: #fce7f3; 
+            vertical-align: middle;
+            margin-left: 4px;
+        }
+    </style>
+</head>
+<body class="flex items-center justify-center min-h-screen text-center relative overflow-hidden py-10">
+    
+    <audio id="bg-music" loop>
+        <source src="../song3.mp3" type="audio/mpeg">
+    </audio>
+
+    <div id="letter-container" class="z-10 animate-fade-in vintage-paper p-8 md:p-14 rounded-3xl max-w-2xl mx-4 w-full text-left relative transition-opacity duration-3000" style="transform: rotate(-1deg);">
+        <div class="absolute -top-6 -left-6 text-6xl opacity-50 rotate-[-15deg]">💌</div>
+        
+        <h1 class="text-4xl md:text-5xl font-bold mb-10 text-center" style="color: #4a2c11; text-shadow: none;">
+            To <span data-insert="name">My Love</span>
+        </h1>
+        
+        <div class="text-2xl md:text-3xl leading-relaxed min-h-[300px]" style="color: #2c1e16; font-weight: 600;">
+            <span id="typed-text"></span><span class="typing-cursor animate-blink" style="background-color: #2c1e16;"></span>
+        </div>
+    </div>
+
+    <!-- Final Cinematic Scene -->
+    <div id="final-scene-overlay">
+        <div id="final-scene-text" class="text-center px-4">
+            <h2 class="text-4xl md:text-6xl font-bold playfair text-glow-pink mb-12 leading-tight">
+                In this infinite universe...<br>it’s always been you ❤️
+            </h2>
+            <div class="btn-container mt-4">
+                <button onclick="restartJourney()" class="btn-primary">
+                    ↺ Replay Our Journey
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script src="../js/main.js"></script>
+    <script>
+        const typedTextEl = document.getElementById('typed-text');
+        const letterContainer = document.getElementById('letter-container');
+        const finalSceneOverlay = document.getElementById('final-scene-overlay');
+        
+        let i = 0;
+        let isTag = false;
+        let text = "";
+        let message = "";
+
+        function typeWriter() {
+            if (i < message.length) {
+                text = message.charAt(i);
+                isTag = (text === '<');
+                
+                if (isTag) {
+                    let tag = "";
+                    while(message.charAt(i) !== '>' && i < message.length) {
+                        tag += message.charAt(i);
+                        i++;
+                    }
+                    tag += '>';
+                    typedTextEl.innerHTML += tag;
+                    i++;
+                    typeWriter(); 
+                } else {
+                    typedTextEl.innerHTML += text;
+                    i++;
+                    // Slower typing for emotional pacing
+                    const speed = Math.random() * 60 + 50;
+                    setTimeout(typeWriter, speed);
+                }
+            } else {
+                // Done typing. Trigger emotional delay before final scene.
+                setTimeout(() => {
+                    startFinalScene();
+                }, 4000); // 4 second anticipation delay
+            }
+        }
+
+        function startFinalScene() {
+            // Fade out the letter
+            letterContainer.style.opacity = '0';
+            
+            // Fade out background music completely
+            if (typeof fadeAudioOut === 'function') {
+                // Slower fade out for the music
+                const audio = document.getElementById('bg-music');
+                if(audio) {
+                    let vol = audio.volume;
+                    const fade = setInterval(() => {
+                        if (vol > 0.01) {
+                            vol -= 0.01;
+                            audio.volume = vol;
+                        } else {
+                            audio.volume = 0;
+                            audio.pause();
+                            clearInterval(fade);
+                        }
+                    }, 50);
+                }
+            }
+
+            setTimeout(() => {
+                // Trigger the cosmic engine to converge hearts
+                if (typeof cosmicEngine !== 'undefined') cosmicEngine.triggerFinalScene();
+                
+                // Show the final message
+                finalSceneOverlay.classList.add('active');
+            }, 3000); // Wait 3 seconds in the dark/stars before text appears
+        }
+
+        function restartJourney() {
+            localStorage.setItem('unlockedStage', 'index');
+            navigate('../index.html');
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            if (typeof cosmicEngine !== 'undefined') cosmicEngine.setMood('letter');
+
+            message = `From the moment our journey began, my life has been filled with a light I never knew existed. Every smile, every laugh, and every quiet moment we share is a treasure I hold dear.<br><br>This little journey through our memories and games is just a small reflection of the beautiful adventure we are on together, ${CONFIG.herName}. You are my greatest gift, my favorite place to be, and my most cherished dream come true.<br><br><span style='color: #8b0000; font-weight: 700;'>Thank you for being you. I love you more than words can say.</span>`;
+            
+            // Intentionally long delay before typing begins to let them absorb the atmosphere
+            setTimeout(typeWriter, 3000); 
+        });
+    </script>
+</body>
+</html>

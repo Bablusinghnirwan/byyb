@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>A Romantic Journey</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body class="flex items-center justify-center min-h-screen text-center relative overflow-hidden">
+    
+    <!-- Loading Screen Overlay -->
+    <div id="loading-screen">
+        <div class="loader-heart text-pink-400 mb-6">💖</div>
+        <p class="text-xl playfair italic opacity-80 max-w-md text-center px-4">"I have found the one whom my soul loves."</p>
+    </div>
+
+    <!-- Audio Placeholders -->
+    <audio id="bg-music" loop>
+        <source src="assets/music/bg-index.mp3" type="audio/mpeg">
+    </audio>
+
+    <div class="z-10 animate-fade-in glass-panel p-10 rounded-3xl max-w-lg mx-4">
+        <h1 class="text-5xl md:text-6xl font-bold mb-6 playfair animate-pulse-glow inline-block px-4 py-2 rounded-lg text-pink-300">
+            For <span data-insert="name">My Love</span>
+        </h1>
+        <p class="text-lg md:text-xl mb-10 opacity-90 leading-relaxed font-light">
+            Every beautiful journey starts with a single step. Are you ready to take it with me?
+        </p>
+        <div class="btn-container">
+            <button onclick="navigate('pages/game.html', 'game')" class="btn-primary">
+                Begin Our Journey
+            </button>
+        </div>
+    </div>
+
+    <script src="js/main.js"></script>
+</body>
+</html>

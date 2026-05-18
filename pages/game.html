@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Catch My Heart | A Romantic Journey</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="../css/style.css">
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+</head>
+<body class="flex flex-col items-center justify-center min-h-screen text-center relative overflow-hidden select-none">
+    
+    <audio id="bg-music" loop>
+        <source src="../song1.mp3" type="audio/mpeg">
+    </audio>
+
+    <div class="absolute top-8 left-0 w-full text-center z-20 pointer-events-none">
+        <div class="glass-panel inline-block px-6 py-2 rounded-full text-2xl font-bold playfair">
+            Hearts: <span id="score" class="text-pink-400">0</span> / 10
+        </div>
+    </div>
+
+    <div id="game-area" class="absolute inset-0 z-10 overflow-hidden cursor-crosshair"></div>
+
+    <div id="win-screen" class="hidden z-30 animate-fade-in glass-panel p-10 rounded-3xl max-w-lg mx-4 flex-col items-center justify-center relative">
+        <h1 class="text-4xl md:text-5xl font-bold mb-6 playfair text-pink-300">You won my heart!</h1>
+        <p class="text-xl mb-8 opacity-90">You unlocked something special, <span data-insert="name">My Love</span> ❤️</p>
+        <div class="btn-container">
+            <button onclick="navigate('journey.html', 'journey')" class="btn-primary">
+                Continue Our Journey
+            </button>
+        </div>
+    </div>
+
+    <script src="../js/main.js"></script>
+    <script>
+        const gameArea = document.getElementById('game-area');
+        const scoreEl = document.getElementById('score');
+        const winScreen = document.getElementById('win-screen');
+        
+        let score = 0;
+        let gameInterval;
+        let isGameActive = true;
+
+        const emojis = ['❤️', '💖', '💕', '💗', '💓'];
+
+        function spawnHeart() {
+            if (!isGameActive) return;
+
+            const heart = document.createElement('div');
+            heart.classList.add('absolute', 'text-4xl', 'md:text-5xl', 'cursor-pointer', 'transition-transform', 'hover:scale-110');
+            
+            heart.innerHTML = emojis[Math.floor(Math.random() * emojis.length)];
+            heart.style.left = Math.random() * (window.innerWidth - 60) + 'px';
+            heart.style.top = '-50px';
+            
+            const duration = Math.random() * 3 + 3; 
+            heart.style.transition = `top ${duration}s linear`;
+            
+            gameArea.appendChild(heart);
+
+            requestAnimationFrame(() => {
+                heart.style.top = window.innerHeight + 50 + 'px';
+            });
+
+            heart.addEventListener('mousedown', (e) => {
+                e.preventDefault(); 
+                catchHeart(heart);
+            });
+            heart.addEventListener('touchstart', (e) => {
+                e.preventDefault();
+                catchHeart(heart);
+            });
+
+            setTimeout(() => {
+                if (heart.parentNode === gameArea) heart.remove();
+            }, duration * 1000);
+        }
+
+        function catchHeart(heart) {
+            if (!isGameActive) return;
+            
+            // Pop sound effect
+            playSFX('../assets/music/pop.mp3');
+            
+            heart.classList.add('animate-heart-pop');
+            score++;
+            scoreEl.textContent = score;
+
+            if (score >= 10) {
+                winGame();
+            }
+
+            setTimeout(() => {
+                if (heart.parentNode === gameArea) heart.remove();
+            }, 400);
+        }
+
+        function winGame() {
+            isGameActive = false;
+            clearInterval(gameInterval);
+            gameArea.innerHTML = '';
+            gameArea.classList.add('pointer-events-none');
+
+            playSFX('../assets/music/win.mp3'); // Win sound effect
+
+            winScreen.classList.remove('hidden');
+            winScreen.classList.add('flex');
+
+            confetti({
+                particleCount: 150,
+                spread: 70,
+                origin: { y: 0.6 },
+                colors: ['#ffb6c1', '#ff69b4', '#ff1493']
+            });
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            if(window.location.pathname.includes('game.html')) {
+                 if (typeof cosmicEngine !== 'undefined') cosmicEngine.setMood('game');
+                 gameInterval = setInterval(spawnHeart, 800);
+            }
+        });
+    </script>
+</body>
+</html>

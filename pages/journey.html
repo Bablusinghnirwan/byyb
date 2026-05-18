@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Our Journey | A Romantic Journey</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="../css/style.css">
+</head>
+<body class="text-center relative overflow-x-hidden min-h-screen">
+    
+    <audio id="bg-music" loop>
+        <source src="../song2.mp3" type="audio/mpeg">
+    </audio>
+
+    <header class="h-screen flex flex-col items-center justify-center relative">
+        <div class="z-10 animate-fade-in px-4">
+            <h1 class="text-5xl md:text-7xl font-bold mb-6 playfair animate-pulse-glow inline-block px-6 py-2 rounded-lg bg-black/20 backdrop-blur-md text-pink-300">The Journey of Us</h1>
+            <p class="text-xl md:text-2xl opacity-90 font-light">Scroll down to relive our memories, <span data-insert="name">My Love</span></p>
+            <div class="mt-12 text-4xl animate-float text-pink-400">↓</div>
+        </div>
+    </header>
+
+    <main class="max-w-4xl mx-auto px-4 pb-32">
+        
+        <section class="min-h-[70vh] flex flex-col md:flex-row-reverse items-center justify-center gap-10 mb-32 scroll-section scroll-hidden">
+            <div class="flex-1 w-full flex justify-center">
+                <img src="../IMG20260316135932.jpg.jpeg" loading="lazy" alt="Special Moments" class="rounded-2xl shadow-[0_0_20px_rgba(236,72,153,0.3)] w-full h-auto max-h-[500px] object-contain bg-black/20">
+            </div>
+            <div class="flex-1 text-left glass-panel p-8 rounded-2xl">
+                <h2 class="text-3xl font-bold mb-4 playfair text-pink-300">Special Moments</h2>
+                <p class="text-lg opacity-90 leading-relaxed">The late-night conversations, the spontaneous trips, and the quiet moments where we didn't need to say a word. Every second with you feels like a beautiful dream.</p>
+            </div>
+        </section>
+
+        <section class="min-h-[70vh] flex flex-col md:flex-row items-center justify-center gap-10 mb-32 scroll-section scroll-hidden">
+            <div class="flex-1 w-full flex justify-center">
+                <img src="../IMG_20260323_162338.jpg.jpeg" loading="lazy" alt="Funny Memories" class="rounded-2xl shadow-[0_0_20px_rgba(236,72,153,0.3)] w-full h-auto max-h-[500px] object-contain bg-black/20">
+            </div>
+            <div class="flex-1 text-left glass-panel p-8 rounded-2xl">
+                <h2 class="text-3xl font-bold mb-4 playfair text-pink-300">Endless Laughter</h2>
+                <p class="text-lg opacity-90 leading-relaxed">You are the only person who can make me laugh until my stomach hurts. I love our inside jokes and how we can be completely silly together without any judgment.</p>
+            </div>
+        </section>
+
+        <section class="min-h-[70vh] flex flex-col items-center justify-center text-center scroll-section scroll-hidden">
+            <div class="glass-panel p-12 rounded-3xl max-w-2xl relative">
+                <div class="absolute -top-10 left-1/2 -translate-x-1/2 text-6xl">✨</div>
+                <h2 class="text-4xl font-bold mb-6 playfair text-pink-300 mt-4">And Now...</h2>
+                <p class="text-xl opacity-90 leading-relaxed mb-10">All these beautiful moments have led us here. But the journey is far from over.</p>
+                <div class="btn-container">
+                    <button onclick="navigate('gift.html', 'gift')" class="btn-primary">
+                        There's something waiting for you 🎁
+                    </button>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <script src="../js/main.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            if (typeof cosmicEngine !== 'undefined') cosmicEngine.setMood('journey');
+            const observerOptions = {
+                root: null,
+                rootMargin: '0px',
+                threshold: 0.2 
+            };
+
+            let delay = 0;
+            const observer = new IntersectionObserver((entries, observer) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        // Stagger effect
+                        setTimeout(() => {
+                            entry.target.classList.remove('scroll-hidden');
+                            entry.target.classList.add('scroll-visible');
+                        }, delay);
+                        delay += 150; // increment delay for next element in batch
+                        observer.unobserve(entry.target);
+                    }
+                });
+                
+                // Reset delay after processing batch
+                setTimeout(() => delay = 0, 500); 
+            }, observerOptions);
+
+            const sections = document.querySelectorAll('.scroll-section');
+            sections.forEach(section => {
+                observer.observe(section);
+            });
+        });
+    </script>
+</body>
+</html>
