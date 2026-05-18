@@ -290,7 +290,6 @@ h1, h2, h3, h4, h5, h6, .playfair {
     animation: ripple 0.8s ease-out;
     pointer-events: none;
 }
-}
 
 /* Music Toggle Button */
 #music-toggle {
